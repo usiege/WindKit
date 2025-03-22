@@ -1,0 +1,41 @@
+## Interface-Retail: 100200
+## Interface-Classic: 11501
+## Interface-Wrath: 30404
+## Interface-Cata: 40400
+## Title: |cff00ffffWindKit|r
+## Title-zhCN: |cff00ffffWind工具箱|r
+## Title-zhTW: |cff00ffffWind工具箱|r
+## Notes: Wind Toolkit
+## Notes-zhCN: Wind工具箱
+## Notes-zhTW: Wind工具箱
+## Author: 听风轻咛
+## Version: 1.0.0
+## SavedVariables: WindKitDB
+## SavedVariablesPerCharacter: WindKitCharDB
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+## X-Before: ElvUI
+## X-Category: Interface
+## X-Website: https://github.com/usiege/WindKit
+## X-Curse-Project-ID: 629320
+
+# 加载顺序：库文件 -> 初始化 -> 核心文件 -> 模块
+
+# # 库文件
+# Libs\Load_Libs.xml
+
+# # 本地化文件
+# Locales\Load_Locales.xml
+
+# 初始化
+Global.lua
+Init.lua
+
+# # 核心文件
+# Core\Load_Core.xml
+
+# # 模块
+# Modules\Load_Modules.xml
+
+## ui
+ui/!Load_ui.xml
