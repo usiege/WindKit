@@ -1,0 +1,10 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <!-- 加载主面板 -->
+    <Script file="MainPanel.lua"/>
+    
+    <!-- 加载小地图增强 -->
+    <Script file="MinimapEnhanced.lua"/>
+    
+    <!-- 其他UI文件 -->
+    <!-- 随着开发添加更多UI文件 -->
+</Ui>
