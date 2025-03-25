@@ -12,9 +12,7 @@
 ## Version: 1.0.0
 ## SavedVariables: WindKitDB
 ## SavedVariablesPerCharacter: WindKitCharDB
-## LoadManagers: AddonLoader
-## X-LoadOn-Always: delayed
-## X-Before: ElvUI
+## LoadBefore: ElvUI
 ## X-Category: Interface
 ## X-Website: https://github.com/usiege/WindKit
 ## X-Curse-Project-ID: 629320
@@ -26,6 +24,9 @@
 
 # # 本地化文件
 # Locales\Load_Locales.xml
+
+# # 配置文件
+config\!Load_Config.xml
 
 # 初始化
 Global.lua
