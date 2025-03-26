@@ -43,7 +43,7 @@ local function GetPlayerInfo()
         realm = GetNormalizedRealmName() or realm
     end
     
-    return name, realm, name.."-"..realm
+    return name, realm, name.." - "..realm
 end
 
 -- 初始化函数
@@ -61,6 +61,7 @@ local function InitializeConfig()
     WindKitDB.playerInfo.realm = realm
     WindKitDB.playerInfo.fullName = fullName
 end
+
 -- 初始化总览标签内容面板
 local function initTotalTabContentPanel(contentPanel, labels)
     
@@ -69,15 +70,19 @@ local function initTotalTabContentPanel(contentPanel, labels)
     dropdown:SetPoint("TOPLEFT", 20, -40)
     dropdown:SetFrameStrata("DIALOG")
     dropdown:SetFrameLevel(101)
-    dropdown.selectedID = 1
-
     
     -- 获取所有配置名称
     local profiles = labels
     -- 初始化下拉菜单
     local function initialize(self, level)
         local info = UIDropDownMenu_CreateInfo()
-        
+        -- 初始化选中的配置风格名称
+        WindKitCharDB.SelectProfileStyleName = (WindKitCharDB.SelectProfileStyleName == "Default" or not WindKitCharDB.SelectProfileStyleName) 
+        and "Default" or WindKitCharDB.SelectProfileStyleName
+        -- 初始化选中的配置风格索引
+        WindKitCharDB.SelectStyleIndex = (WindKitCharDB.SelectStyleIndex == 1 or not WindKitCharDB.SelectStyleIndex) 
+        and 1 or WindKitCharDB.SelectStyleIndex
+
         -- 如果没有配置，显示默认选项
         if #profiles == 0 then
             info.text = "默认[听风]"
@@ -90,6 +95,7 @@ local function initTotalTabContentPanel(contentPanel, labels)
                 CloseDropDownMenus()
             end
             UIDropDownMenu_AddButton(info, level)
+            WindKitCharDB.SelectProfileStyleName = "Default"
             return
         end
         
@@ -100,13 +106,19 @@ local function initTotalTabContentPanel(contentPanel, labels)
             info.checked = (dropdown.selectedID == index)
             info.func = function()
                 dropdown.selectedID = index
+                dropdown.selectedText = profileName
                 UIDropDownMenu_SetSelectedID(dropdown, index)
                 UIDropDownMenu_SetText(dropdown, profileName)
                 CloseDropDownMenus()
+
+                -- 保存选中的配置风格名称
+                WindKitCharDB.SelectStyleIndex = index
+                WindKitCharDB.SelectProfileStyleName = profileName
             end
             UIDropDownMenu_AddButton(info, level)
         end
-        dropdown.selectedID = 1
+        dropdown.selectedID = WindKitCharDB.SelectStyleIndex
+        dropdown.selectedText = WindKitCharDB.SelectProfileStyleName
     end
     -- 设置下拉菜单的初始化函数
     UIDropDownMenu_Initialize(dropdown, initialize)
@@ -114,12 +126,15 @@ local function initTotalTabContentPanel(contentPanel, labels)
     -- 设置下拉菜单的默认文本和宽度
     UIDropDownMenu_SetWidth(dropdown, 100)
     UIDropDownMenu_SetButtonWidth(dropdown, 80)
-    UIDropDownMenu_SetText(dropdown, "默认[听风]")
+    local text = dropdown.selectedText
+    UIDropDownMenu_SetText(dropdown, text)
+    local selectedID = dropdown.selectedID
+    UIDropDownMenu_SetSelectedID(dropdown, selectedID) 
 
     -- 添加一键设置界面按钮
     local setupButton = CreateFrame("Button", nil, contentPanel, "UIPanelButtonTemplate")
     setupButton:SetSize(120, 30)
-    setupButton:SetPoint("TOPLEFT", 180, -40)
+    setupButton:SetPoint("TOPLEFT", 180, -38)
     setupButton:SetText("一键设置ElvUI")
     
     -- 按钮点击事件
@@ -127,6 +142,16 @@ local function initTotalTabContentPanel(contentPanel, labels)
         WindKit.DebugPrint("打开一键设置界面")
         WKMainPanelFrame:Hide()
         WindKitCharDB.elvuiConfigIfSetted = true
+        -- 设置ElvUI配置
+        if ElvDB.profileKeys then
+            local fullName = WindKitDB.playerInfo.fullName
+            local styleName = WindKitCharDB.SelectProfileStyleName
+            local currentProfile = ElvDB.profiles[styleName]
+            WindKit.DebugPrint("currentProfile: ", fullName, styleName, currentProfile~=nil)
+            WKElvUISetCurrentConfig(fullName, styleName, currentProfile)
+            WindKit.currentProfile = currentProfile
+        end
+
         WindKit.reloadUI()
     end)
    
@@ -141,6 +166,7 @@ frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 frame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" and ... == "WindKit" then
+        -- 初始化配置
         InitializeConfig()
 
     elseif event == "PLAYER_ENTERING_WORLD" then
@@ -158,21 +184,24 @@ frame:SetScript("OnEvent", function(self, event, ...)
         end
 
         -- 初始化总览面板  
-        local profiles =  {}
+        local profileNames =  {}
+        local profiles = ElvDB.profiles
         if ElvDB and ElvDB.profiles then
-            for profileName, _ in pairs(ElvDB.profiles) do
-                table.insert(profiles, profileName)
+            for profileName, _ in pairs(profiles) do
+                table.insert(profileNames, profileName)
             end
             -- 对配置名称进行排序
-            table.sort(profiles)
+            table.sort(profileNames)
+            -- 保存现有配置
+            WindKit.ElvUIProfiles = profiles
         end
-        WindKit.DebugPrint("profiles: ", profiles)
-        -- if WKMainPanelFrame.contentPanels[1].dropdown then return end
-        local names = WindKit.GetTableValues(profiles)
+        local names = WindKit.GetTableValues(profileNames) 
+        if WKMainPanelFrame.contentPanels[1].dropdown then return end
         local dropdown, setupButton = 
         initTotalTabContentPanel(WKMainPanelFrame.contentPanels[1], names)
         WKMainPanelFrame.contentPanels[1].dropdown = dropdown
         WKMainPanelFrame.contentPanels[1].setupButton = setupButton
+
     end
 end)
 

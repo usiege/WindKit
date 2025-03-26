@@ -69,15 +69,19 @@ frame:SetScript("OnEvent", function(self, event, addonName)
             if msg == "info" then
                 WindKit.Print("听风一键设置插件工具包")
             elseif msg == "version" then
-                WindKit.Print("游戏版本 ", WindKit.version)
+                WindKit.Print("插件版本 ", WindKit.version)
             elseif msg == "help" then
-                WindKit.Print(" 命令用法:")
+                WindKit.Print(" 命令用法 ")
                 WindKit.Print("  /tf info - 显示角色信息")
                 WindKit.Print("  /tf version - 显示版本信息")
             elseif msg == "game" then
                 WindKit.ShowGameVersion()
             else
-                WindKit.showMainPanel()
+                if not WindKit.panelIsShow then
+                    WindKit.showMainPanel()
+                else
+                    WindKit.hideMainPanel()
+                end
             end
         end
 
@@ -87,7 +91,7 @@ frame:SetScript("OnEvent", function(self, event, addonName)
             WindKit.Print("测试命令已执行!")
         end
         SLASH_WINDKITTHELP1 = "/thelp"
-        SLASH_WINDKITTHELP2 = "/Whelp"
+        SLASH_WINDKITTHELP2 = "/whelp"
         SlashCmdList["WINDKITTHELP"] = function(msg)
             WindKit.Print(" 命令用法:")
             WindKit.Print("  /tf info - 显示角色信息")

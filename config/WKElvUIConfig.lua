@@ -771,6 +771,36 @@ function WKElvUIHideTutorial()
     end
 end
 
+-- 设置当前配置
+function WKElvUISetCurrentConfig(fullName, styleName, profile)
+    if not fullName then return end
+    if not styleName then return end
+    if #fullName == 0 or #styleName == 0 then return end
+
+    -- 设置ElvDB默认配置
+    if not ElvDB then ElvDB = {}  end
+    if not ElvDB["profileKeys"] then  ElvDB["profileKeys"] = {} end 
+    -- 对应elv配置设置下拉
+    ElvDB["profileKeys"][fullName] = styleName
+
+    -- 设置ElvDB个人配置
+    if not ElvPrivateDB then  ElvPrivateDB = {} end
+    if not ElvPrivateDB["profileKeys"] then ElvPrivateDB["profileKeys"] = {} end
+    -- 对应elv配置个人下拉
+    ElvPrivateDB["profileKeys"][fullName] = styleName
+
+    if not profile then return end
+    -- 设置ElvDB当前配置
+    if not ElvDB["profiles"] then 
+        ElvDB["profiles"] = {} 
+        ElvDB["profiles"][styleName] = profile
+    end
+    if not ElvDB["profiles"][styleName] then 
+        ElvDB["profiles"][styleName] = profile
+    end
+end
+
+-- 设置默认配置
 function WKElvUISetDefaultConfig(name, realm)
     local name = name
     local realm = realm

@@ -39,7 +39,7 @@ closeButton:SetScript("OnClick", function() mainFrame:Hide() end)
 -- 创建左侧标签栏
 local leftPanel = CreateFrame("Frame", nil, mainFrame)
 leftPanel:SetSize(200, 470)
-leftPanel:SetPoint("TOPLEFT", 0, -30)
+leftPanel:SetPoint("TOPLEFT", 5, -30)
 leftPanel.bg = leftPanel:CreateTexture(nil, "BACKGROUND")
 leftPanel.bg:SetAllPoints(true)
 leftPanel.bg:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Background")
@@ -109,7 +109,7 @@ end
 leftPanel.buttons = {}
 
 -- 创建示例标签
-local tabNames = {"总览", "帮助"}
+local tabNames = {"总览", "使用方法", "帮助"}
 for i, name in ipairs(tabNames) do
     leftPanel.buttons[i] = CreateTabButton(name, i)
 
@@ -118,6 +118,15 @@ for i, name in ipairs(tabNames) do
     content:SetPoint("TOPLEFT", 10, -10)
     content:SetText(name)
     contentPanels[i].name = name   
+
+    if name == "总览" then end
+    if name == "使用方法" then
+        content:SetText("")
+        -- 添加标题
+        local title = contentPanels[i]:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+        title:SetPoint("TOPLEFT", 20, -20)
+        title:SetText("听风工具箱使用方法")
+    end
 
     if name == "帮助" then
         content:SetText("")
@@ -131,37 +140,53 @@ for i, name in ipairs(tabNames) do
         desc:SetPoint("TOPLEFT", 20, -50)
         desc:SetWidth(550)
         desc:SetJustifyH("LEFT")
-        desc:SetText("听风工具箱专门为插件包提供一键设置及多种界面优化功能。\n\n主要功能：\n1. 一键设置界面\n2. 便捷设置小工具\n3. 更多功能开发中...")
+        desc:SetText("为插件包界面提供一键设置选项及多种界面优化功能。\n\n主要功能：\n1. 一键设置界面\n2. 便捷设置小工具\n3. 更多功能开发中...")
         
+
+        -- 创建链接标题
+        local bilibTitle = contentPanels[i]:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        bilibTitle:SetPoint("TOPLEFT", 20, -150)
+        bilibTitle:SetText("Bilibili：")
+        
+        -- 创建可点击的KOOK链接
+        local bilibLink = CreateFrame("EditBox", nil, contentPanels[i], "InputBoxTemplate")
+        bilibLink:SetSize(300, 20)
+        bilibLink:SetPoint("TOPLEFT", 80, -145)
+        bilibLink:SetText("https://space.bilibili.com/38532242")
+        bilibLink:SetAutoFocus(false)
+        bilibLink:SetCursorPosition(0)
+
         -- 创建链接标题
         local linkTitle = contentPanels[i]:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        linkTitle:SetPoint("TOPLEFT", 20, -150)
+        linkTitle:SetPoint("TOPLEFT", 20, -170)
         linkTitle:SetText("GitHub：")
         
         -- 创建可点击的GitHub链接
         local githubLink = CreateFrame("EditBox", nil, contentPanels[i], "InputBoxTemplate")
         githubLink:SetSize(300, 20)
-        githubLink:SetPoint("TOPLEFT", 80, -145)
+        githubLink:SetPoint("TOPLEFT", 80, -165)
         githubLink:SetText("https://github.com/usiege/WindKit")
         githubLink:SetAutoFocus(false)
         githubLink:SetCursorPosition(0)
 
         -- 创建链接标题
         local linkTitle = contentPanels[i]:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        linkTitle:SetPoint("TOPLEFT", 20, -170)
+        linkTitle:SetPoint("TOPLEFT", 20, -190)
         linkTitle:SetText("WC社区：")
         
         -- 创建可点击的KOOK链接
         local kookLink = CreateFrame("EditBox", nil, contentPanels[i], "InputBoxTemplate")
         kookLink:SetSize(300, 20)
-        kookLink:SetPoint("TOPLEFT", 80, -165)
+        kookLink:SetPoint("TOPLEFT", 80, -185)
         kookLink:SetText("https://www.kookapp.cn/app/invite/EGosAW")
         kookLink:SetAutoFocus(false)
         kookLink:SetCursorPosition(0)
+
+        
         
         -- 添加链接说明
         local linkDesc = contentPanels[i]:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-        linkDesc:SetPoint("TOPLEFT", 20, -200)
+        linkDesc:SetPoint("TOPLEFT", 20, -200-10)
         linkDesc:SetText("点击链接框可以全选文本，Ctrl+C 复制")
         
         -- 创建图片容器
