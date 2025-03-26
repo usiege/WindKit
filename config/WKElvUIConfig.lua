@@ -821,6 +821,7 @@ function WKElvUISetDefaultConfig(name, realm)
     end
     if not ElvDB["profiles"][WKElvUIConfig_Name_SimpleStyle] then 
         ElvDB["profiles"][WKElvUIConfig_Name_SimpleStyle] = simpleStyleConfig   
+        WindKit.DebugPrint("设置默认配置", simpleStyleConfig)
     end
 
     if not ElvPrivateDB then  ElvPrivateDB = {} end

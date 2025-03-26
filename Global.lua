@@ -77,10 +77,10 @@ frame:SetScript("OnEvent", function(self, event, addonName)
             elseif msg == "game" then
                 WindKit.ShowGameVersion()
             else
-                if not WindKit.panelIsShow then
-                    WindKit.showMainPanel()
-                else
+                if WindKit.panelIsShow() then
                     WindKit.hideMainPanel()
+                else
+                    WindKit.showMainPanel()
                 end
             end
         end
