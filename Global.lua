@@ -22,43 +22,7 @@ end
 
 -- 添加加载确认
 local frame = CreateFrame("Frame")
-frame:RegisterEvent("ADDON_LOADED")
-frame:RegisterEvent("VARIABLES_LOADED")
-frame:RegisterEvent("PLAYER_LOGIN")
-frame:RegisterEvent("PLAYER_ENTERING_WORLD") 
 frame:SetScript("OnEvent", function(self, event, addonName)
-    if event == "ADDON_LOADED" and addonName == "WindKit"  then
-        WindKit.DebugPrint("WindKit 加载完成")
-
-    elseif event == "VARIABLES_LOADED" then
-        WindKit.DebugPrint("所有 SavedVariables 加载完毕")
-        -- 插件版本信息
-        local version, title, notes, interface = GetWindKitInfo(WindKit.addonName)
-        WindKit.version = version
-        WindKit.title = title
-        WindKit.notes = notes
-        WindKit.interface = interface
-
-        -- 设置ElvUI配置
-        local name = WindKitDB.playerInfo.name
-        local realm = WindKitDB.playerInfo.realm
-        
-        -- 角色单独配置
-        if not WindKitCharDB.ElvUIConfig then
-            WindKit.SetElvUIConfig(name, realm)
-            WindKitCharDB.ElvUIConfig = true
-        end
-
-    elseif event == "PLAYER_LOGIN" then
-        WindKit.DebugPrint("玩家数据完全就绪（角色进入世界）")
-        -- 角色名，服务器名
-        WindKit.PrintPlayerInfo() -- 打印角色信息
-        WKElvUIHideTutorial() -- 隐藏ElvUI教程
-        
-    elseif event == "PLAYER_ENTERING_WORLD" then
-        WindKit.DebugPrint("切换地图或副本")
-
-    end
     if addonName == "WindKit" then
         -- 注册斜杠命令
         SLASH_WINDKIT1 = "/tf"
@@ -254,11 +218,16 @@ SlashCmdList["WINDKITTEST"] = function(msg)
     print("WindKit插件测试命令已执行!")
 end
 
--- 设置ElvUI配置
-function WindKit.SetElvUIConfig(name, realm) 
+-- 设置听风默认配置
+function WindKit.SetDefaultConfig(name, realm)
+    -- 设置ElvUI配置
     WKElvUISetDefaultConfig(name, realm)
     WKElvUIHideTutorial()
-    --输出加载信息
-    WindKit.Print("|cff33ff99WindKit|r: ".."配置已加载")
+
+    -- 设置Plater配置
+    WKPlaterSetDefaultConfig(name, realm)
+
+    -- 输出加载信息
+    WindKit.Print("|cff33ff99WindKit|r: ".."所有配置已加载")
 end
 
