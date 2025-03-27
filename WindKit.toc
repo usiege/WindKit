@@ -9,13 +9,15 @@
 ## Notes-zhCN: Wind工具箱
 ## Notes-zhTW: Wind工具箱
 ## Author: 听风轻咛
-## Version: 1.0.0
+## Version: 0.1.1
 ## SavedVariables: WindKitDB
 ## SavedVariablesPerCharacter: WindKitCharDB
 ## LoadBefore: ElvUI
 ## X-Category: Interface
 ## X-Website: https://github.com/usiege/WindKit
 ## X-Curse-Project-ID: 629320
+## RequiredDeps: ElvUI
+
 
 # 加载顺序：库文件 -> 初始化 -> 核心文件 -> 模块
 

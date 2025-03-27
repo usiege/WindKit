@@ -1,0 +1,44 @@
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Lua compiled files
+*.lua.txt
+*.luac
+
+# WoW specific
+Saved/
+SavedVariables/
+WTF/
+Cache/
+Screenshots/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Release packages
+*.zip
+*.rar
+*.7z
+
+# Development specific
+dev/
+test/
+notes/
