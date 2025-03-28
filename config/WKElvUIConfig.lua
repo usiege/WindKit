@@ -844,6 +844,11 @@ WKElvUIConfig_SimpleStyle =  {
 WKElvUIConfig_Name_FFXIV = "FFXIV Style"
 WKElvUIConfig_FFXIV = {}
 
+------- function
+
+
+
+
 function WKElvUIIfAvailable()
     if ElvUI then
         return true
@@ -855,6 +860,92 @@ end
 function WKElvUISetNameplatesEnable(enable)
     if ElvUI and ElvUI[1] and ElvUI[1].db then
         ElvUI[1].db.nameplates.enable = enable
+    end
+end
+
+function WKElvUIDisabledPlaterNotice()
+    if not PlaterDB then return end
+    if PlaterDB and PlaterDB.db then
+        PlaterDB.db.profile.general.hidePlaterNotice = true
+    end
+    
+    -- 隐藏 ElvUI 提示并禁用 nameplates
+    if ElvUI and ElvUI[1] and ElvUI[1].db then
+        -- 禁用当前运行的 ElvUI 的 nameplates
+        ElvUI[1].db.nameplates.enable = false
+        
+        -- 禁用全局设置中的 nameplates
+        if ElvUI[1].db.global then
+            ElvUI[1].db.global.nameplates = ElvUI[1].db.global.nameplates or {}
+            ElvUI[1].db.global.nameplates.enable = false
+        end
+        
+        -- 禁用所有配置中的 nameplates
+        if ElvUI[1].db.profiles then
+            for _, profile in pairs(ElvUI[1].db.profiles) do
+                if profile.nameplates then
+                    profile.nameplates.enable = false
+                end
+            end
+        end
+
+        -- 强制禁用 nameplates 模块
+        if ElvUI[1].NamePlates then
+            ElvUI[1].NamePlates:Disable()
+        end
+
+        -- 禁用 ElvUI 的 nameplates 模块
+        if E and E.private then
+            E.private.nameplates = E.private.nameplates or {}
+            E.private.nameplates.enable = false
+        end
+
+        -- 禁用所有单位的 nameplates
+        if ElvUI[1].db.nameplates and ElvUI[1].db.nameplates.units then
+            for _, unitData in pairs(ElvUI[1].db.nameplates.units) do
+                if unitData then
+                    unitData.enable = false
+                end
+            end
+        end
+
+        -- 强制刷新 ElvUI 的 nameplates 设置
+        if ElvUI[1].NamePlates and ElvUI[1].NamePlates.UpdateAll then
+            ElvUI[1].NamePlates:UpdateAll()
+        end
+    end
+    
+    -- 确保 ElvDB 中也禁用了 nameplates
+    if ElvDB then
+        -- 禁用全局设置
+        if not ElvDB.global then ElvDB.global = {} end
+        if not ElvDB.global.nameplates then ElvDB.global.nameplates = {} end
+        ElvDB.global.nameplates.enable = false
+        
+        -- 禁用所有配置中的 nameplates
+        if ElvDB.profiles then
+            for _, profile in pairs(ElvDB.profiles) do
+                if profile.nameplates then
+                    profile.nameplates.enable = false
+                end
+            end
+        end
+    end
+    
+    -- 确保 ElvPrivateDB 中也禁用了 nameplates
+    if ElvPrivateDB then
+        if not ElvPrivateDB.global then ElvPrivateDB.global = {} end
+        if not ElvPrivateDB.global.nameplates then ElvPrivateDB.global.nameplates = {} end
+        ElvPrivateDB.global.nameplates.enable = false
+        
+        -- 禁用所有配置中的 nameplates
+        if ElvPrivateDB.profiles then
+            for _, profile in pairs(ElvPrivateDB.profiles) do
+                if profile.nameplates then
+                    profile.nameplates.enable = false
+                end
+            end
+        end
     end
 end
 

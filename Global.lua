@@ -4,6 +4,7 @@ WindKitDB = WindKitDB or {}
 WindKitCharDB = WindKitCharDB or {}
 
 -- 全局变量
+WKDEBUG = false
 GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 
 
@@ -20,49 +21,6 @@ local function GetWindKitInfo(addonName)
     return version, title, notes, interface
 end
 
--- 添加加载确认
-local frame = CreateFrame("Frame")
-frame:SetScript("OnEvent", function(self, event, addonName)
-    if addonName == "WindKit" then
-        -- 注册斜杠命令
-        SLASH_WINDKIT1 = "/tf"
-        SLASH_WINDKIT2 = "/wk"
-        SLASH_WINDKIT3 = "/windkit"
-        SlashCmdList["WINDKIT"] = function(msg)
-            msg = msg:lower()
-            if msg == "info" then
-                WindKit.Print("听风一键设置插件工具包")
-            elseif msg == "version" then
-                WindKit.Print("插件版本 ", WindKit.version)
-            elseif msg == "help" then
-                WindKit.Print(" 命令用法 ")
-                WindKit.Print("  /tf info - 显示角色信息")
-                WindKit.Print("  /tf version - 显示版本信息")
-            elseif msg == "game" then
-                WindKit.ShowGameVersion()
-            else
-                if WindKit.panelIsShow() then
-                    WindKit.hideMainPanel()
-                else
-                    WindKit.showMainPanel()
-                end
-            end
-        end
-
-        -- 添加测试命令
-        SLASH_WINDKITTEST1 = "/wktest"
-        SlashCmdList["WINDKITTEST"] = function(msg)
-            WindKit.Print("测试命令已执行!")
-        end
-        SLASH_WINDKITTHELP1 = "/thelp"
-        SLASH_WINDKITTHELP2 = "/whelp"
-        SlashCmdList["WINDKITTHELP"] = function(msg)
-            WindKit.Print(" 命令用法:")
-            WindKit.Print("  /tf info - 显示角色信息")
-            WindKit.Print("  /tf version - 显示版本信息")
-        end
-    end
-end)
 
 -- 添加全局函数
 function WindKit.GetPlayerInfo()
@@ -164,6 +122,7 @@ WindKit.GetTableValues = function(tbl)
 end
 
 function WindKit.DebugPrint(...)
+    if not WKDEBUG then return end
     local args = {...}
     if #args == 0 then return end
 
@@ -212,11 +171,6 @@ function WindKit.ShowGameVersion()
     WindKit.Print("TOC版本: " .. vInfo.tocversion)
 end
 
--- 添加测试命令
-SLASH_WINDKITTEST1 = "/wktest"
-SlashCmdList["WINDKITTEST"] = function(msg)
-    print("WindKit插件测试命令已执行!")
-end
 
 -- 设置听风默认配置
 function WindKit.SetDefaultConfig(name, realm)

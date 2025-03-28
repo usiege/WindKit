@@ -9,17 +9,16 @@
 ## Notes-zhCN: Wind工具箱
 ## Notes-zhTW: Wind工具箱
 ## Author: 听风轻咛
-## Version: 0.1.2
+## Version: 0.2.0
 ## SavedVariables: WindKitDB
 ## SavedVariablesPerCharacter: WindKitCharDB
 
 ## X-Category: Interface
 ## X-Website: https://github.com/usiege/WindKit
 ## X-Curse-Project-ID: 629320
+## X-WoW-Version: 3.4.4.60003
 
-## LoadBefore: ElvUI, Plater
-## RequiredDeps: ElvUI, Plater
-
+## LoadBefore: ElvUI, Plater, Details
 
 # 加载顺序：库文件 -> 初始化 -> 核心文件 -> 模块
 

@@ -1,4 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Script file="WKElvUIConfig.lua"/>
     <Script file="WKPlaterConfig.lua"/>
+    <Script file="WKDetailsConfig.lua"/>
 </Ui>
